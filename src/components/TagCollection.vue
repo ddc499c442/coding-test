@@ -1,24 +1,20 @@
 <template>
-    <div></div>
+    <div>
+        <TagComponent v-for="(tag, index) in tags" :key="index" :tag="tag" :editing="editing"/>
+    </div>
 </template>
 
 <script>
- import Tag from './Tag.vue'
+ import TagComponent from '@/components/Tag.vue'
 
  export default {
-     // Display a collection of tags passed as {"name": "tag:text"}
-     name: 'TagCollection',
-     components: {
-         Tag
-     },
-     data() {
-         return {}
-     },
-     methods: {
-     }
+    name: 'TagCollection',
+    props: {
+        tags: Array, 
+        editing: Boolean
+    },
+    components: {
+        TagComponent
+    }
  }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>

@@ -1,15 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+import store from '@/store'
 
 Vue.config.productionTip = false
 
 new Vue({
-    data: {
-        dataUrl: null
-    },
-    render (h) {
-        return h(App)
-    }
-}).$mount('#tags-app')
-
-
+    el: '#tags-app',
+    store,
+    render: h => h(App)
+  })
