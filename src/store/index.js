@@ -30,6 +30,13 @@ export default new Vuex.Store({
             state.tags = tags;
         },
         addTag(state, tagName){
+            //Make sure not to add a tag that already exists
+            for(var i=0; i<state.tags.length; i++){
+                if(state.tags[i].name == tagName){
+                    return;
+                }
+            }
+            
             state.tags.push({
                 name: tagName,
                 id: Date.now()
