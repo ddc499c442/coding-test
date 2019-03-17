@@ -1,13 +1,15 @@
 <template>
-    <span :contentEditable="editable" class="article-tag peerj-article-tag staff-tag" :class="[ tagClass, tagTypeClass]">
-        {{ tag.name }}
-        <i v-if="editing" @click="deleteTag" class="icon-large icon-remove clickable" />
-    </span>
+    <transition name="bounce-fade" appear>
+        <div :contentEditable="editable" class="article-tag peerj-article-tag staff-tag" :class="[ tagClass, tagTypeClass, testingTagClass]">
+            <div class="tag-inner">
+                {{ tag.name }}
+                <span v-if="editing" @click="deleteTag" class="ml-2 delete-icon">×</span>
+            </div>
+        </div>
+    </transition>
 </template>
 
 <script>
- import { EventBus } from '../EventBus'
-
 export default {
      name: 'Tag',
      props: {
@@ -22,10 +24,18 @@ export default {
      },
      computed: {
          tagClass () {
-             return 'tag-' + this.tag.name.replace(' ', '-')
+             return 'tag-' + this.tag.name.replace(' ', '-');
          },
          tagTypeClass () {
              return this.tagType + '-tag'
+         },
+         testingTagClass(){
+            if(this.editing){
+                var prefix = 'testing:';
+                if(this.tag.name.substring(0, prefix.length) == prefix){
+                    return 'tag-testing';
+                }
+            }
          }
 
      },
@@ -34,24 +44,34 @@ export default {
              this.editable = !this.editable
          },
          deleteTag () {
-             EventBus.$emit('peerj:staff-tags:delete', this.tag.id)
+            this.$store.commit('deleteTag', this.tag.id);
          }
      }
 }
 </script>
 
 <style scoped>
+
+.tag-inner{
+    display:flex;
+}
+.tag-testing{
+    background: #3a87ad !important;
+    color: white !important;
+}
+
 .peerj-article-tag,
 .peerj-article-tag:hover {
     white-space: nowrap;
     border-radius: 5px;
     display: inline-block;
     vertical-align: bottom;
-    font-size: 12px;
+    font-size: 0.9rem;
     margin: 0 2px 2px 0;
     padding: 0 7px;
     color: #ffffff;
     background-color: #3a87ad;
+    position:relative;
 }
 
 .peerj-article-tag.staff-tag {
@@ -157,4 +177,22 @@ export default {
 .clickable {
     cursor: pointer;
  }
+.delete-icon{
+    padding:0 4px;
+    font-size:1.5rem;
+    line-height:0.9rem;
+    cursor:pointer;
+}
+.delete-icon:hover{
+    background: rgba(0,0,0,0.1);
+}
+
+.bounce-fade-enter-active, .bounce-fade-leave-active {
+    transition: all 0.2s;
+    
+}
+.bounce-fade-enter, .bounce-fade-leave-to{
+    opacity: 0;
+    transform: scale(2);
+}
 </style>
