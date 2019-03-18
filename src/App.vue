@@ -6,19 +6,18 @@
         <div v-else>
             <div class="tag-collections" @click="showModal">
                 <template v-if="hasTags">
-                    <TagCollection class="tag-collection" :editing="editing" :tags="normalTags" name="normal" />
-                    <TagCollection class="tag-collection" :editing="editing" :tags="specialTags" name="special" />
+                    <TagCollection class="tag-collection" :editing="editing" :tags="tags" name="mixed" />
                 </template>
                 <div v-else class="btn no-tags-button">No data!</div>
             </div>
-            <ModalPopup ref="modal-popup" :normalTags="normalTags" :specialTags="specialTags" :editing="editing" />
+            <ModalPopup ref="modal-popup" />
         </div>
         
     </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import TagCollection from '@/components/TagCollection.vue'
 import ModalPopup from '@/components/Modal.vue'
 
@@ -37,10 +36,6 @@ export default {
     computed: {
         ...mapState([
             'tags'
-        ]),
-        ...mapGetters([
-            'normalTags',
-            'specialTags'
         ]),
         hasTags(){
             return this.tags.length;

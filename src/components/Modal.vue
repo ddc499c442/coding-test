@@ -89,14 +89,11 @@
 
 <script>
 import TagCollection from '@/components/TagCollection.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     components: {
         TagCollection
-    },
-    props:{
-        normalTags: Array, 
-        specialTags: Array,
     },
     data(){
         return{
@@ -110,6 +107,12 @@ export default {
                 'testing:high',
             ],
         }
+    },
+    computed: {
+        ...mapGetters([
+            'normalTags',
+            'specialTags'
+        ]),
     },
     methods: {
         addSelect(){
